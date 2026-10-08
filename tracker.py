@@ -29,7 +29,7 @@ def run_tracker():
 
     run_input = {
         "startUrls": [{"url": business_url}],
-        "maxReviews": 500,
+        "maxReviews": 1000,
         "reviewsSort": "newest",
     }
 
