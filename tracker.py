@@ -36,30 +36,42 @@ def run_tracker():
     actor_call = client.actor("compass/google-maps-reviews-scraper").call(
         run_input=run_input
     )
-    dataset_items = (
-        client.dataset(actor_call["defaultDatasetId"]).list_items().items
-    )
+
+    # Safely extract dataset ID whether Apify returns a dict or an object
+    if isinstance(actor_call, dict):
+        dataset_id = actor_call.get("defaultDatasetId") or actor_call.get("default_dataset_id")
+    else:
+        dataset_id = getattr(actor_call, "default_dataset_id", None) or getattr(actor_call, "defaultDatasetId", None)
+
+    # Fetch extracted items from Apify dataset
+    dataset_items = client.dataset(dataset_id).list_items().items
 
     current_reviews = {}
     for item in dataset_items:
-        r_id = (
-            item.get("reviewId")
-            or item.get("id")
-            or item.get("reviewUrl")
-            or item.get("name")
-        )
+        if isinstance(item, dict):
+            r_id = (
+                item.get("reviewId")
+                or item.get("id")
+                or item.get("reviewUrl")
+                or item.get("name")
+            )
+            author = item.get("name") or item.get("authorTitle") or "Anonymous"
+            rating = item.get("stars") or item.get("rating") or item.get("reviewRating")
+            text = item.get("text") or item.get("reviewText") or item.get("comment", "")
+            date = item.get("publishedAtDate") or item.get("date")
+        else:
+            r_id = getattr(item, "review_id", None) or getattr(item, "id", None) or getattr(item, "name", None)
+            author = getattr(item, "name", "Anonymous")
+            rating = getattr(item, "stars", None) or getattr(item, "rating", None)
+            text = getattr(item, "text", "")
+            date = getattr(item, "published_at_date", None)
+
         if r_id:
             current_reviews[str(r_id)] = {
-                "author": item.get("name")
-                or item.get("authorTitle")
-                or "Anonymous",
-                "rating": item.get("stars")
-                or item.get("rating")
-                or item.get("reviewRating"),
-                "text": item.get("text")
-                or item.get("reviewText")
-                or item.get("comment", ""),
-                "date": item.get("publishedAtDate") or item.get("date"),
+                "author": author,
+                "rating": rating,
+                "text": text,
+                "date": date,
             }
 
     previous_snapshot = load_previous_data()
