@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-09 14:10 UTC",
+  "last_updated": "2026-10-09 14:16 UTC",
   "total_reviews": 578,
   "average_rating": 4.9,
   "reviews": {
@@ -261,11 +261,11 @@
       "text": "We've been working with Empowerly for a while now, and Shahrukh has been wonderful as our counselor. He's patient, genuinely invested in the student's progress, and always makes time to answer questions . The sessions are well structured without feeling rushed, and we've seen real confidence and clarity develop over time. Highly recommend both Empowerly and Shahrukh.",
       "date": "2026-10-04T23:51:19.548Z"
     },
-    "Ci9DQUlRQUNvZENodHljRjlvT25wdFV6bHNkVXhpY21wU1FUQkZTVkk0Y1dOeU4xRRAB": {
+    "Ci9DQUlRQUNvZENodHljRjlvT2xwM1IydHdkM2d6VmxOd1UyczJhVVl3WWtJNFFsRRAB": {
       "author": "Aditya Gaine",
       "rating": 5,
       "text": "Empowerly counseling is highly effective in guiding students through the college admissions process with personalized support and expert advice. Their counselors provide clear strategies, valuable insights, and consistent encouragement, helping students build strong, well-rounded applications and feel confident in their goals. They also played a key role in helping me get accepted into a top 30 university by offering targeted guidance on essays, extracurriculars, and overall positioning. Overall, Empowerly stands out for its professionalism, organization, and genuine commitment to student success.",
-      "date": "2026-10-04T23:22:44.571Z"
+      "date": "2026-04-25T15:28:46.873Z"
     },
     "Ci9DQUlRQUNvZENodHljRjlvT2tGa1ltdGxkRGQzYWxwcVlXOVZURGxpVGpoS01WRRAB": {
       "author": "Nilesh B",
@@ -800,12 +800,6 @@
       "rating": 5,
       "text": "Betty Tran from empowerly has been amazing. We are new to this counseling journey and didn’t know what to expect. Betty made our onboarding so easy and also helped us with summer program. I have already recommended Empowerly to bunch of my friends.",
       "date": "2026-04-25T21:39:47.711Z"
-    },
-    "Ci9DQUlRQUNvZENodHljRjlvT2xwM1IydHdkM2d6VmxOd1UyczJhVVl3WWtJNFFsRRAB": {
-      "author": "Aditya Gaine",
-      "rating": 5,
-      "text": "Empowerly counseling is highly effective in guiding students through the college admissions process with personalized support and expert advice. Their counselors provide clear strategies, valuable insights, and consistent encouragement, helping students build strong, well-rounded applications and feel confident in their goals. They also played a key role in helping me get accepted into a top 30 university by offering targeted guidance on essays, extracurriculars, and overall positioning. Overall, Empowerly stands out for its professionalism, organization, and genuine commitment to student success.",
-      "date": "2026-04-25T15:28:46.873Z"
     },
     "Ci9DQUlRQUNvZENodHljRjlvT25WaU5uTTJXVjl0TWxFMmJVdEtaMWxLYVRoWFIwRRAB": {
       "author": "FBooya",
@@ -3470,7 +3464,15 @@
       "rating": 5,
       "text": "As a high school senior it can be very difficult understanding the whole college application process. I think that Synocate really made it clear and easy for me to understand that process. They really motivated me to keep on going when things got stressful. I would like to especially thank the CEO Ishan who was not only motivational, but also caring and understanding of the situation I was in. He gave me great tips on how I should organize myself in order to tackle the college application process. Synocate helps students understand that they really can achieve their goals.",
       "date": "2014-08-04T05:47:08.351Z"
+    },
+    "Ci9DQUlRQUNvZENodHljRjlvT25wdFV6bHNkVXhpY21wU1FUQkZTVkk0Y1dOeU4xRRAB": {
+      "author": "Aditya Gaine",
+      "rating": 5,
+      "text": "Empowerly counseling is highly effective in guiding students through the college admissions process with personalized support and expert advice. Their counselors provide clear strategies, valuable insights, and consistent encouragement, helping students build strong, well-rounded applications and feel confident in their goals. They also played a key role in helping me get accepted into a top 30 university by offering targeted guidance on essays, extracurriculars, and overall positioning. Overall, Empowerly stands out for its professionalism, organization, and genuine commitment to student success.",
+      "date": "2026-10-04T23:22:44.571Z"
     }
   },
-  "missing_counts": {}
+  "missing_counts": {
+    "Ci9DQUlRQUNvZENodHljRjlvT25wdFV6bHNkVXhpY21wU1FUQkZTVkk0Y1dOeU4xRRAB": 1
+  }
 }
