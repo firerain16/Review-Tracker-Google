@@ -158,4 +158,43 @@ def run_tracker():
     print(f"New Reviews Today    : {len(new_reviews)}")
     print(f"Confirmed Removed    : {len(truly_removed_reviews)}")
     print(f"Rating Changes Today : {len(rating_changes)}")
-    print("-" * 45 +
+    print("-" * 45)
+    print("")
+
+    # Build and dispatch Slack alert on every run
+    slack_msg = f"📊 *Google Reviews Summary — {today}*\n"
+    slack_msg += f"• *Total Active Reviews:* {total_reviews}\n"
+    slack_msg += f"• *Average Rating:* {avg_rating:.2f} ⭐\n"
+
+    if truly_removed_reviews or new_reviews or rating_changes:
+        if truly_removed_reviews:
+            slack_msg += f"\n🚨 *{len(truly_removed_reviews)} CONFIRMED REMOVED REVIEW(S):*\n"
+            for r in truly_removed_reviews:
+                slack_msg += f"• *{r['data'].get('author')}* ({r['data'].get('rating')}⭐): \"_{r['data'].get('text')}_\"\n"
+
+        if new_reviews:
+            slack_msg += f"\n✨ *{len(new_reviews)} NEW REVIEW(S) ADDED:*\n"
+            for r in new_reviews:
+                slack_msg += f"• *{r['data'].get('author')}* ({r['data'].get('rating')}⭐): \"_{r['data'].get('text')}_\"\n"
+
+        if rating_changes:
+            slack_msg += f"\n⚠️ *{len(rating_changes)} RATING CHANGE(S):*\n"
+            for r in rating_changes:
+                slack_msg += f"• *{r['author']}* changed score from {r['old_rating']}⭐ to {r['new_rating']}⭐\n"
+    else:
+        slack_msg += "\nℹ️ _No new, deleted, or changed reviews since the last run._"
+
+    send_slack_alert(slack_webhook, slack_msg)
+
+    updated_snapshot = {
+        "last_updated": today,
+        "total_reviews": total_reviews,
+        "average_rating": round(avg_rating, 2),
+        "reviews": current_reviews,
+        "missing_counts": updated_missing_counts,
+    }
+    save_current_data(updated_snapshot)
+
+
+if __name__ == "__main__":
+    run_tracker()
