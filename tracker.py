@@ -1,16 +1,33 @@
 import datetime
 import json
 import os
+import urllib.request
 from apify_client import ApifyClient
 
 DATA_FILE = "reviews_data.json"
+
+
+def send_slack_alert(webhook_url, message_text):
+    if not webhook_url:
+        print("⚠️ SLACK_WEBHOOK_URL environment variable is missing or blank.")
+        return
+    payload = {"text": message_text}
+    data = json.dumps(payload).encode("utf-8")
+    req = urllib.request.Request(
+        webhook_url, data=data, headers={"Content-Type": "application/json"}
+    )
+    try:
+        with urllib.request.urlopen(req) as response:
+            print("📢 Slack alert dispatched successfully!")
+    except Exception as e:
+        print(f"❌ Failed to send Slack alert: {e}")
 
 
 def load_previous_data():
     if os.path.exists(DATA_FILE):
         with open(DATA_FILE, "r", encoding="utf-8") as f:
             return json.load(f)
-    return {"last_updated": None, "reviews": {}}
+    return {"last_updated": None, "reviews": {}, "missing_counts": {}}
 
 
 def save_current_data(data):
@@ -21,6 +38,7 @@ def save_current_data(data):
 def run_tracker():
     apify_token = os.environ.get("APIFY_TOKEN")
     business_url = os.environ.get("BUSINESS_URL")
+    slack_webhook = os.environ.get("SLACK_WEBHOOK_URL")
 
     if not apify_token or not business_url:
         raise ValueError("Missing APIFY_TOKEN or BUSINESS_URL secrets.")
@@ -37,13 +55,15 @@ def run_tracker():
         run_input=run_input
     )
 
-    # Safely extract dataset ID whether Apify returns a dict or an object
-    if isinstance(actor_call, dict):
-        dataset_id = actor_call.get("defaultDatasetId") or actor_call.get("default_dataset_id")
-    else:
-        dataset_id = getattr(actor_call, "default_dataset_id", None) or getattr(actor_call, "defaultDatasetId", None)
+    try:
+        dataset_id = actor_call["defaultDatasetId"]
+    except (TypeError, KeyError):
+        dataset_id = getattr(
+            actor_call,
+            "default_dataset_id",
+            getattr(actor_call, "defaultDatasetId", None),
+        )
 
-    # Fetch extracted items from Apify dataset
     dataset_items = client.dataset(dataset_id).list_items().items
 
     current_reviews = {}
@@ -53,14 +73,25 @@ def run_tracker():
                 item.get("reviewId")
                 or item.get("id")
                 or item.get("reviewUrl")
-                or item.get("name")
             )
             author = item.get("name") or item.get("authorTitle") or "Anonymous"
-            rating = item.get("stars") or item.get("rating") or item.get("reviewRating")
-            text = item.get("text") or item.get("reviewText") or item.get("comment", "")
+            rating = (
+                item.get("stars")
+                or item.get("rating")
+                or item.get("reviewRating")
+            )
+            text = (
+                item.get("text")
+                or item.get("reviewText")
+                or item.get("comment", "")
+            )
             date = item.get("publishedAtDate") or item.get("date")
         else:
-            r_id = getattr(item, "review_id", None) or getattr(item, "id", None) or getattr(item, "name", None)
+            r_id = (
+                getattr(item, "review_id", None)
+                or getattr(item, "id", None)
+                or getattr(item, "review_url", None)
+            )
             author = getattr(item, "name", "Anonymous")
             rating = getattr(item, "stars", None) or getattr(item, "rating", None)
             text = getattr(item, "text", "")
@@ -76,19 +107,28 @@ def run_tracker():
 
     previous_snapshot = load_previous_data()
     previous_reviews = previous_snapshot.get("reviews", {})
+    missing_counts = previous_snapshot.get("missing_counts", {})
 
     new_reviews = []
-    removed_reviews = []
+    truly_removed_reviews = []
     rating_changes = []
 
+    # Check for missing reviews (Requires 2 consecutive misses before declaring deleted)
+    updated_missing_counts = {}
     for r_id, old_data in previous_reviews.items():
         if r_id not in current_reviews:
-            removed_reviews.append({"id": r_id, "data": old_data})
+            count = missing_counts.get(r_id, 0) + 1
+            if count >= 2:
+                truly_removed_reviews.append({"id": r_id, "data": old_data})
+            else:
+                current_reviews[r_id] = old_data
+                updated_missing_counts[r_id] = count
 
+    # Detect New Reviews or Rating Changes
     for r_id, new_data in current_reviews.items():
-        if r_id not in previous_reviews:
+        if r_id not in previous_reviews and r_id not in updated_missing_counts:
             new_reviews.append({"id": r_id, "data": new_data})
-        else:
+        elif r_id in previous_reviews:
             old_rating = previous_reviews[r_id].get("rating")
             if old_rating and old_rating != new_data["rating"]:
                 rating_changes.append(
@@ -116,41 +156,6 @@ def run_tracker():
     print(f"Total Active Reviews : {total_reviews}")
     print(f"Average Rating       : {avg_rating:.2f} ⭐")
     print(f"New Reviews Today    : {len(new_reviews)}")
-    print(f"Removed Reviews Today: {len(removed_reviews)}")
+    print(f"Confirmed Removed    : {len(truly_removed_reviews)}")
     print(f"Rating Changes Today : {len(rating_changes)}")
-    print("-" * 45)
-
-    if removed_reviews:
-        print("\n🚨 REMOVED REVIEWS DETECTED:")
-        for r in removed_reviews:
-            print(
-                f" - [{r['data'].get('rating')}⭐] {r['data'].get('author')}: \"{r['data'].get('text')}\""
-            )
-
-    if new_reviews:
-        print("\n✨ NEW REVIEWS ADDED:")
-        for r in new_reviews:
-            print(
-                f" - [{r['data'].get('rating')}⭐] {r['data'].get('author')}: \"{r['data'].get('text')}\""
-            )
-
-    if rating_changes:
-        print("\n⚠️ RATING CHANGES DETECTED:")
-        for r in rating_changes:
-            print(
-                f" - {r['author']}: Changed from {r['old_rating']}⭐ to {r['new_rating']}⭐"
-            )
-
-    print("=" * 45 + "\n")
-
-    updated_snapshot = {
-        "last_updated": today,
-        "total_reviews": total_reviews,
-        "average_rating": round(avg_rating, 2),
-        "reviews": current_reviews,
-    }
-    save_current_data(updated_snapshot)
-
-
-if __name__ == "__main__":
-    run_tracker()
+    print("-" * 45 +
