@@ -66,6 +66,18 @@ def run_tracker():
 
     dataset_items = client.dataset(dataset_id).list_items().items
 
+    previous_snapshot = load_previous_data()
+    previous_reviews = previous_snapshot.get("reviews", {})
+    missing_counts = previous_snapshot.get("missing_counts", {})
+
+    # Create a lookup map of existing reviews by (author, text) to prevent ID shift false-positives
+    existing_by_author_text = {}
+    for old_id, old_data in previous_reviews.items():
+        author = old_data.get("author")
+        text = old_data.get("text", "")
+        if author:
+            existing_by_author_text[(author, text)] = old_id
+
     current_reviews = {}
     for item in dataset_items:
         if isinstance(item, dict):
@@ -97,6 +109,11 @@ def run_tracker():
             text = getattr(item, "text", "")
             date = getattr(item, "published_at_date", None)
 
+        # Fallback to existing stable ID if author + text match
+        author_text_key = (author, text)
+        if author_text_key in existing_by_author_text:
+            r_id = existing_by_author_text[author_text_key]
+
         if r_id:
             current_reviews[str(r_id)] = {
                 "author": author,
@@ -105,20 +122,16 @@ def run_tracker():
                 "date": date,
             }
 
-    previous_snapshot = load_previous_data()
-    previous_reviews = previous_snapshot.get("reviews", {})
-    missing_counts = previous_snapshot.get("missing_counts", {})
-
     new_reviews = []
     truly_removed_reviews = []
     rating_changes = []
 
-    # Check for missing reviews (Requires 2 consecutive misses before declaring deleted)
+    # Require 3 consecutive misses before marking as truly deleted
     updated_missing_counts = {}
     for r_id, old_data in previous_reviews.items():
         if r_id not in current_reviews:
             count = missing_counts.get(r_id, 0) + 1
-            if count >= 2:
+            if count >= 3:
                 truly_removed_reviews.append({"id": r_id, "data": old_data})
             else:
                 current_reviews[r_id] = old_data
@@ -161,7 +174,7 @@ def run_tracker():
     print("-" * 45)
     print("")
 
-    # Build and dispatch Slack alert on every run
+    # Build and dispatch Slack alert
     slack_msg = f"📊 *Google Reviews Summary — {today}*\n"
     slack_msg += f"• *Total Active Reviews:* {total_reviews}\n"
     slack_msg += f"• *Average Rating:* {avg_rating:.2f} ⭐\n"
