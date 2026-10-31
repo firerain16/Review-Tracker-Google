@@ -1,25 +1,19 @@
 {
-  "last_updated": "2026-10-30 00:50 UTC",
-  "total_reviews": 612,
+  "last_updated": "2026-10-31 00:52 UTC",
+  "total_reviews": 613,
   "average_rating": 4.91,
   "reviews": {
+    "Ci9DQUlRQUNvZENodHljRjlvT2xkc2RVMVJPRVF6YmxkNVdHdEhaaTFqVDNCalZXYxAB": {
+      "author": "Ashu S",
+      "rating": 5,
+      "text": "Empowerly has been a valuable resource throughout our college application journey.<br>We sincerely appreciate Shahrukh for his genuine care, patience, and dedicated support. His guidance goes beyond the application process, helping my child stay focused, organized, and on track. His prompt responses, personalized attention, and thoughtful advice have made our journey smooth and positive. We truly value his continued support.",
+      "date": "2026-10-30T20:35:19.769Z"
+    },
     "Ci9DQUlRQUNvZENodHljRjlvT2pZeGRrbFlPV1kwY2xsSU4wWk9aV3BxWXpreFRYYxAB": {
       "author": "Claire Chen",
       "rating": 5,
       "text": "I’ve had the absolute best experience working with Lisa! She is incredibly knowledgeable, supportive, and always so quick to respond whenever I have a question or need help. What stands out most about Lisa is how much effort she puts into truly getting to know her students. She took the time to understand my goals, interests, and priorities, which made all of her advice feel genuinely personalized to me.<br><br>Throughout the entire college application process, Lisa always made sure I had the resources, information, and guidance I needed to feel confident in what I was submitting. She goes above and beyond, and I always felt like there was a purpose behind everything we worked on together.<br><br>College applications were something I expected to be extremely overwhelming, but Lisa made the entire process feel organized, streamlined, and surprisingly stress-free. She somehow even made it fun! I never felt like I was scrambling or unsure of what I should be doing next because she kept everything clear and manageable.<br><br>I’m genuinely so proud of my college applications and everything I submitted, and Lisa played such a huge role in making me feel that way. I couldn't have asked for a better college counselor, and I’m so grateful for all of the time, effort, and support she has given me throughout this process. I would absolutely recommend her to any student!",
       "date": "2026-10-28T17:09:56.669Z"
-    },
-    "Ci9DQUlRQUNvZENodHljRjlvT214T09UTnhRa1IxZGtwMlMxbFVYM1JHWDNCR1lYYxAB": {
-      "author": "Lubienis",
-      "rating": 5,
-      "text": "We would highly recommend Empowerly for college counseling . We have worked with our counselor Shahrukh Malik for 4 years, he is very knowledgeable about the entire process and our kid loves the sessions with him. The essay edit team and support staff promptly address any queries, turn around time is quick. The Empowerly portal is easy too navigate, We are very satisfied with Empowerly",
-      "date": "2026-10-26T07:43:03.234Z"
-    },
-    "Ci9DQUlRQUNvZENodHljRjlvT25SUGFXWllabXRwYm5CdFNWRktRMVF5VDJodFExRRAB": {
-      "author": "Lubi",
-      "rating": 5,
-      "text": "Empowerly college counseling has been very beneficial for our kid. Our counselor is Shahrukh Malik and he has been guiding our kid for the past 4 years. He created a very structured 4 year detailed plan to fit into our kid’s daily schedule and interest. He keeps refining the plan based on the kid’s capacity. Shahrukh has understood our kid so well and has brought out the best in him.",
-      "date": "2026-10-26T07:35:08.457Z"
     },
     "Ci9DQUlRQUNvZENodHljRjlvT2xRd1JuZEtUMTlSUW1wcVRUWkRNVUpQU1U4Mk5IYxAB": {
       "author": "anoop viswan",
@@ -3674,7 +3668,22 @@
       "rating": 5,
       "text": "As a high school senior it can be very difficult understanding the whole college application process. I think that Synocate really made it clear and easy for me to understand that process. They really motivated me to keep on going when things got stressful. I would like to especially thank the CEO Ishan who was not only motivational, but also caring and understanding of the situation I was in. He gave me great tips on how I should organize myself in order to tackle the college application process. Synocate helps students understand that they really can achieve their goals.",
       "date": "2014-08-04T05:47:08.351Z"
+    },
+    "Ci9DQUlRQUNvZENodHljRjlvT214T09UTnhRa1IxZGtwMlMxbFVYM1JHWDNCR1lYYxAB": {
+      "author": "Lubienis",
+      "rating": 5,
+      "text": "We would highly recommend Empowerly for college counseling . We have worked with our counselor Shahrukh Malik for 4 years, he is very knowledgeable about the entire process and our kid loves the sessions with him. The essay edit team and support staff promptly address any queries, turn around time is quick. The Empowerly portal is easy too navigate, We are very satisfied with Empowerly",
+      "date": "2026-10-26T07:43:03.234Z"
+    },
+    "Ci9DQUlRQUNvZENodHljRjlvT25SUGFXWllabXRwYm5CdFNWRktRMVF5VDJodFExRRAB": {
+      "author": "Lubi",
+      "rating": 5,
+      "text": "Empowerly college counseling has been very beneficial for our kid. Our counselor is Shahrukh Malik and he has been guiding our kid for the past 4 years. He created a very structured 4 year detailed plan to fit into our kid’s daily schedule and interest. He keeps refining the plan based on the kid’s capacity. Shahrukh has understood our kid so well and has brought out the best in him.",
+      "date": "2026-10-26T07:35:08.457Z"
     }
   },
-  "missing_counts": {}
+  "missing_counts": {
+    "Ci9DQUlRQUNvZENodHljRjlvT214T09UTnhRa1IxZGtwMlMxbFVYM1JHWDNCR1lYYxAB": 1,
+    "Ci9DQUlRQUNvZENodHljRjlvT25SUGFXWllabXRwYm5CdFNWRktRMVF5VDJodFExRRAB": 1
+  }
 }
